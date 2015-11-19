@@ -1,4 +1,4 @@
-package scalera.moonrover
+package scalera.moonrover.domain
 
 import scala.util.Random
 
@@ -9,10 +9,10 @@ sealed trait Position {
 
   val movements: List[Movement] = Nil
 
-  private def move(removeMov: Movement): Position = {
-    val opposite = if (removeMov==Left) Right else Left
+  private def move(to: Movement): Position = {
+    val removeMov = if (to==Left) Right else Left
     this withMovements (movements.span(_ != removeMov) match {
-      case (withoutMov, Nil) => opposite +: movements
+      case (withoutMov, Nil) => to +: movements
       case (withoutMov, _ :: withMov) => withoutMov ::: withMov
     })
   }
@@ -21,13 +21,13 @@ sealed trait Position {
     * Calculate postition just one discrete step to the right
     * @return
     */
-  def right: Position = move(removeMov = Left)
+  def right: Position = move(Right)
 
   /**
     * Calculate postition just one discrete step to the left
     * @return
     */
-  def left: Position = move(removeMov = Right)
+  def left: Position = move(Left)
 
   /**
     * Create a brand new immutable [[Position]]

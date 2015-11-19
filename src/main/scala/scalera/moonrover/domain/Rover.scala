@@ -1,4 +1,4 @@
-package scalera.moonrover
+package scalera.moonrover.domain
 
 import scala.util.Random
 

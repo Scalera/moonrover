@@ -1,6 +1,6 @@
-package scalera.moonrover
+package scalera.moonrover.domain
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 class PositionTest extends FlatSpec with Matchers{
 

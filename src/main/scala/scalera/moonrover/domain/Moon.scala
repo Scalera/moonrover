@@ -1,4 +1,4 @@
-package scalera.moonrover
+package scalera.moonrover.domain
 
 /**
   * The Moon itself...and our [[Rover]]'s context
