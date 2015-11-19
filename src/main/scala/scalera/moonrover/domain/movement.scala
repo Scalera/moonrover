@@ -1,4 +1,4 @@
-package scalera.moonrover
+package scalera.moonrover.domain
 
 /**
   * A [[Movement]] represents a number of
