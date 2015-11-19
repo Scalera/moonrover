@@ -5,8 +5,12 @@ jdk:
   - oraclejdk8
 script:
   - sbt $TASKS
+  - sbt clean coverage test
+after_success:
+  - sbt coveralls
 env:
   - TASKS='test'
+  - COVERALLS_REPO_TOKEN='oAvKbNTN9kxad9bI693UQ7JFATrgi9Urn'
 notifications:
   email:
     - scalerablog@gmail.com
