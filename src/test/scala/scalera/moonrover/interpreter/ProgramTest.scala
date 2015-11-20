@@ -1,10 +1,8 @@
 package scalera.moonrover.interpreter
 
-import org.scalatest.{FlatSpec, Matchers}
+import scalera.moonrover.BaseTest
 
-class ProgramTest extends FlatSpec with Matchers{
-
-  behavior of "Program"
+class ProgramTest extends BaseTest("Program") {
 
   it should "fail when including negative line ids" in {
     a [Exception] should be thrownBy {
@@ -14,7 +12,7 @@ class ProgramTest extends FlatSpec with Matchers{
 
   it should "fail when providing no commands" in {
     a [Exception] should be thrownBy {
-      Program(Map())
+      Program()
     }
   }
 

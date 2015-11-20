@@ -1,10 +1,8 @@
 package scalera.moonrover.domain
 
-import org.scalatest.{FlatSpec, Matchers}
+import scalera.moonrover.BaseTest
 
-class RoverTest extends FlatSpec with Matchers {
-
-  behavior of "Rover"
+class RoverTest extends BaseTest("Rover") {
 
   it should "move correctly without changing other immutable attributes" in {
     val rover = Rover()

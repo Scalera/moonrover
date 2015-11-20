@@ -1,17 +1,21 @@
 package scalera.moonrover.interpreter
 
-import org.scalatest.{FlatSpec, Matchers}
+import scalera.moonrover.BaseTest
 
-class CommandTest extends FlatSpec with Matchers {
+class CommandTest extends BaseTest("Command") {
 
-  behavior of "Command"
+  val myCommand = new Command[Int]{
+    override def perform(state: State[Int]): State[Int] =
+      state.update(state.value + 1)
+  }
 
   it should "be able to perform changes over some state" in {
-    val myCommand = new Command[Int]{
-      override def perform(state: State[Int]): State[Int] =
-        state.update(state.value + 1)
-    }
     myCommand.perform(State(1)) shouldEqual State(2)
+  }
+
+  it should "be able to group commands" in {
+    CommandSeq(myCommand,myCommand,myCommand)
+      .perform(State(1)) shouldEqual State(4)
   }
 
 }

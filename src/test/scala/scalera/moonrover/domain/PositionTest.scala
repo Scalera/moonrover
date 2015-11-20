@@ -1,10 +1,8 @@
 package scalera.moonrover.domain
 
-import org.scalatest.{FlatSpec, Matchers}
+import scalera.moonrover.BaseTest
 
-class PositionTest extends FlatSpec with Matchers{
-
-  behavior of "Position"
+class PositionTest extends BaseTest("Position") {
 
   it should "compare properly different positions" in {
 
