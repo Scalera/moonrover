@@ -14,7 +14,7 @@ import scala.util.Random
 case class Rover(
                   position: Position = Undefined,
                   landingPosition: Position = Undefined,
-                  identifier: Rover.Id = Random.nextString(5)) {
+                  identifier: Rover.Id = Random.nextString(Rover.IdLength)) {
 
   /**
     * Move the rover one step to specified direction
@@ -37,5 +37,7 @@ case class Rover(
 object Rover {
 
   type Id = String
+
+  val IdLength = 10
 
 }
