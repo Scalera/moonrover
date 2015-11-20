@@ -1,10 +1,8 @@
 package scalera.moonrover.interpreter
 
-import org.scalatest.{Matchers, FlatSpec}
+import scalera.moonrover.BaseTest
 
-class InterpreterTest extends FlatSpec with Matchers {
-
-  behavior of "Interpreter"
+class InterpreterTest extends BaseTest("Interpreter") {
 
   private val add = new Command[Int]{
     def perform(state: State[Int]): State[Int] =

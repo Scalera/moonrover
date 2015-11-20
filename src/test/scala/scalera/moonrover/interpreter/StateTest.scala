@@ -1,10 +1,8 @@
 package scalera.moonrover.interpreter
 
-import org.scalatest.{Matchers, FlatSpec}
+import scalera.moonrover.BaseTest
 
-class StateTest extends FlatSpec with Matchers {
-
-  behavior of "State"
+class StateTest extends BaseTest("State") {
 
   it should "update its value and the last change timestamp" in {
     val s1 = State(1)
