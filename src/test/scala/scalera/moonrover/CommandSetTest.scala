@@ -24,8 +24,13 @@ class CommandSetTest extends BaseTest("CommandSet") {
     ()
   }
 
-  ignore should "perform some given command when using an ifParachuteFound" in {
-    ()
+  it should "perform some given command when using an ifParachuteFound" in {
+    val (r1,r2) = ("r1","r2")
+    val moon = Moon.withLanding(r1,r2,distanceBetweenRovers = 2)
+    val moonAfterCond = IfParachuteFound(r1,Move(r1,Left)).perform(moon)
+    moonAfterCond.value.rovers(r1).position should not be equal(moon.rovers(r1).position)
+    val moonAfterSecondCond = IfParachuteFound(r1,Move(r1,Left)).perform(moonAfterCond)
+    moonAfterSecondCond.value.rovers(r1).position shouldEqual moonAfterCond.value.rovers(r1).position
   }
 
 }

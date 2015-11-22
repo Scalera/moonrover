@@ -47,8 +47,8 @@ object CommandSet {
   case class IfParachuteFound(
                                rover: Rover.Id,
                                command: Command[Moon]) extends Command[Moon] {
-    //TODO Implement perform in IfParachuteFound
-    override def perform(state: State[Moon]): State[Moon] = ???
+    override def perform(state: State[Moon]): State[Moon] =
+      if (state.value.foundParachute(rover)) command.perform(state) else state
   }
 
 
