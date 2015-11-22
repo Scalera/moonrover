@@ -12,7 +12,7 @@ import scala.annotation.tailrec
  */
 case class Interpreter[S](
                            state: State[S],
-                           commandsLeft: Seq[Command[S]]) {
+                           commandsLeft: Iterable[Command[S]]) {
 
   /**
    * Evaluates next command,
