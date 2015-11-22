@@ -1,7 +1,7 @@
 package scalera.moonrover
 
 import scalera.moonrover.domain._
-import scalera.moonrover.interpreter.Interpreter
+import scalera.moonrover.interpreter.{Command, GoTo, Interpreter}
 
 class CommandSetTest extends BaseTest("CommandSet") {
 
@@ -20,8 +20,10 @@ class CommandSetTest extends BaseTest("CommandSet") {
     Interpreter(moon,Seq(Nop(r1))).fullEval.state.value shouldEqual moon
   }
 
-  ignore should "change the command sequence when performing a GoTo" in {
-    ()
+  it should "ignore the effects in state of a GoTo command" in {
+    val (r1,r2) = ("r1","r2")
+    val moon = Moon.withLanding(r1,r2)
+    Interpreter(moon,Seq[Command[Moon]](GoTo(15))).fullEval.state.value shouldEqual moon
   }
 
   it should "perform some given command when using an ifParachuteFound" in {

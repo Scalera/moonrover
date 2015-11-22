@@ -27,17 +27,6 @@ object CommandSet {
   }
 
   /**
-   * Change program sequence
-   * and jump onto given line
-   * @param rover Given rover id.
-   * @param line Line to jump.
-   */
-  case class GoTo(rover: Rover.Id, line: LineId) extends Command[Moon] {
-    //TODO Implement perform in GoTo command
-    override def perform(state: State[Moon]): State[Moon] = ???
-  }
-
-  /**
    * Conditional executing of some
    * given command.
    * @param rover Given rover id.
@@ -50,7 +39,5 @@ object CommandSet {
     override def perform(state: State[Moon]): State[Moon] =
       if (state.value.foundParachute(rover)) command.perform(state) else state
   }
-
-
 
 }

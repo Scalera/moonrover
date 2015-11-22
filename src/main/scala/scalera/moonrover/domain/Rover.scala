@@ -40,4 +40,11 @@ object Rover {
 
   val IdLength = 10
 
+  /**
+    * Define some random rover id.
+    * @return
+    */
+  def someRoverId: String =
+    s"rover-${Random.nextString(Rover.IdLength)}"
+
 }
