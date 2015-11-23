@@ -18,6 +18,11 @@ case class Program[S](
     !commands.keys.exists(_ < 0),
     "Command lines with negative identifier? Seriously?")
 
+  require(!commands.exists {
+    case (_, GoTo(line)) => !commands.map(_._1).toList.contains(line)
+    case _ => false
+  }, "GoTo's definitions point to some not existing lines!")
+
   private[interpreter] val sortedLineIds: Seq[LineId] =
     commands.toSeq.map(_._1).sortWith(_ < _)
 
@@ -72,15 +77,10 @@ object Program {
     * @return
     */
   def apply[S](commands: (Program.LineId, CommandDefinition[S])*): Id => Program[S] = { id =>
-    val program = Program(
+    Program(
       commands.map {
         case (line, commandDef) => line -> commandDef(id)
       }.toMap)
-    require(!program.commands.exists {
-      case (_, GoTo(line)) => !commands.map(_._1).contains(line)
-      case _ => false
-    }, "GoTo's definitions point to some not existing lines!")
-    program
   }
 
 }
