@@ -1,7 +1,6 @@
 package scalera.moonrover
 
 import scalera.moonrover.domain._
-import scalera.moonrover.interpreter.Program.LineId
 import scalera.moonrover.interpreter.{Command, State}
 
 object CommandSet {
