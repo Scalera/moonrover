@@ -20,8 +20,11 @@ case class Moon(rovers: Map[Rover.Id, Rover]) {
       Option(rovers.partition { case (id, _) => rover == id }).map {
         case (rovers1, rovers2) => (rovers1.values.head, rovers2.values.head)
       }.get
-    currentRover.position.equals(theOtherOne.landingPosition) ||
-      currentRover.position.equals(currentRover.landingPosition)
+    val result =
+      currentRover.position.equals(theOtherOne.landingPosition) ||
+        currentRover.position.equals(currentRover.landingPosition)
+    println(s"$result > ${currentRover.identifier} L[${currentRover.landingPosition.relative}] P[${currentRover.position.relative}] - ${theOtherOne.identifier} L[${theOtherOne.landingPosition.relative}] P[${theOtherOne.position.relative}]")
+    result
   }
 
   /**

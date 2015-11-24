@@ -12,7 +12,7 @@ import scala.annotation.tailrec
   */
 case class Interpreter[S](
                            state: State[S],
-                           commandsLeft: Iterable[Command[S]]) {
+                           commandsLeft: Stream[Command[S]]) {
 
   /**
     * Evaluates next command,
@@ -20,7 +20,7 @@ case class Interpreter[S](
     * @return
     */
   def eval: Interpreter[S] = commandsLeft match {
-    case (nextCommand :: rest) =>
+    case nextCommand #:: rest =>
       Interpreter(nextCommand.perform(state), rest)
     case _ => this
   }
@@ -31,7 +31,7 @@ case class Interpreter[S](
     */
   @tailrec
   final def fullEval: Interpreter[S] = commandsLeft match {
-    case Nil => this
+    case commands if commands == Stream.empty => this
     case _ => this.eval.fullEval
   }
 
