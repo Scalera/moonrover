@@ -1,7 +1,7 @@
 package scalera.moonrover
 
 import scalera.moonrover.domain._
-import scalera.moonrover.interpreter.{Command, State}
+import scalera.moonrover.interpreter._
 
 object CommandSet {
 
@@ -11,8 +11,9 @@ object CommandSet {
    * @param movement Direction.
    */
   case class Move(rover: Rover.Id, movement: Movement) extends Command[Moon] {
+
     override def perform(state: State[Moon]): State[Moon] = {
-      state.value.updateRoverLocation(rover,movement)
+      state.value.updateRoverLocation(rover, movement)
     }
   }
 
@@ -22,6 +23,7 @@ object CommandSet {
    * @param rover Given rover id.
    */
   case class Nop(rover: Rover.Id) extends Command[Moon] {
+
     override def perform(state: State[Moon]): State[Moon] = state
   }
 
@@ -29,14 +31,19 @@ object CommandSet {
    * Conditional executing of some
    * given command.
    * @param rover Given rover id.
-   * @param command Command that will be performed
-   *                in case of affirmative condition.
+   * @param conditionalCommand Command that will be performed
+   *                           in case of affirmative condition.
    */
-  case class IfParachuteFound(
-                               rover: Rover.Id,
-                               command: Command[Moon]) extends Command[Moon] {
-    override def perform(state: State[Moon]): State[Moon] =
-      if (state.value.foundParachute(rover)) command.perform(state) else state
+  class IfParachuteFound(
+                          rover: Rover.Id,
+                          conditionalCommand: Command[Moon]) extends ConditionalCommand[Moon](
+    _.value.foundParachute(rover), conditionalCommand)
+
+  object IfParachuteFound {
+
+    def apply(rover: Rover.Id,
+              conditionalCommand: Command[Moon]): IfParachuteFound =
+      new IfParachuteFound(rover, conditionalCommand)
   }
 
 }

@@ -1,7 +1,7 @@
 package scalera.moonrover
 
 import scalera.moonrover.domain._
-import scalera.moonrover.interpreter.{Command, GoTo, Interpreter}
+import scalera.moonrover.interpreter._
 
 class CommandSetTest extends BaseTest("CommandSet") {
 
@@ -10,20 +10,20 @@ class CommandSetTest extends BaseTest("CommandSet") {
   it should "move some rover to some direction" in {
     val (r1,r2) = ("r1","r2")
     val moon = Moon.withLanding(r1,r2,distanceBetweenRovers = 2)
-    Interpreter(moon, Stream(Move(r1,Right)))
+    Interpreter(moon, Stream((s:State[Moon]) =>Move(r1,Right)))
       .fullEval.state.value.rovers(r1).position shouldEqual Undefined.right
   }
 
   it should "do nothing - you sure you wanna do this?" in {
     val (r1,r2) = ("r1","r2")
     val moon = Moon.withLanding(r1,r2)
-    Interpreter(moon,Stream(Nop(r1))).fullEval.state.value shouldEqual moon
+    Interpreter(moon,Stream((s:State[Moon]) =>Nop(r1))).fullEval.state.value shouldEqual moon
   }
 
   it should "ignore the effects in state of a GoTo command" in {
     val (r1,r2) = ("r1","r2")
     val moon = Moon.withLanding(r1,r2)
-    Interpreter(moon,Stream[Command[Moon]](GoTo(15))).fullEval.state.value shouldEqual moon
+    Interpreter(moon,Stream((s:State[Moon]) =>GoTo[Moon](15))).fullEval.state.value shouldEqual moon
   }
 
   it should "perform some given command when using an ifParachuteFound" in {

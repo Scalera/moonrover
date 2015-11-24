@@ -3,7 +3,7 @@ package scalera.moonrover
 import scalera.moonrover.Simulator.MaxTicks
 import scalera.moonrover.domain.{Rover, Moon}
 import scalera.moonrover.domain.Rover.Id
-import scalera.moonrover.interpreter.{CommandSeq, Interpreter, Program}
+import scalera.moonrover.interpreter._
 
 import scala.annotation.tailrec
 
@@ -87,8 +87,11 @@ object Simulator {
     val moon = Moon.withLanding(rover1 = roverId1, rover2 = roverId2)
     Interpreter(
       moon,
-      program(roverId1).toStream().zip(program(roverId2).toStream()).map {
-        case (command1, command2) => CommandSeq(command1, command2)
+      (s: State[Moon]) => {
+        program(roverId1).toStream()(s).zip(program(roverId2).toStream()(s)).map {
+          case (command1, command2) =>
+            CommandSeq(command1(s), command2(s))
+        }
       })
   }
 
