@@ -40,5 +40,5 @@ case class Interpreter[S](
 object Interpreter {
 
   def apply[S](state: State[S], program: Program[S]): Interpreter[S] =
-    new Interpreter(state, program, program.nextLine()(state))
+    new Interpreter(state, program, Option(program.entryPoint))
 }

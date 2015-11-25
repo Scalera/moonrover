@@ -23,8 +23,8 @@ case class Program[S](
     case _ => false
   }, "GoTo's definitions point to some not existing lines!")
 
-  private[interpreter] val sortedLineIds@((entryPoint, _) :: _): Seq[LineId] =
-    commands.toSeq.map(_._1).sortWith(_ < _)
+  lazy val sortedLineIds@(entryPoint :: _): Seq[LineId] =
+    commands.toList.map(_._1).sortWith(_ < _)
 
   def nextLine(current: LineId = entryPoint)(state: State[S]): Option[LineId] = {
     val (line, command) = (current, commands(current))
@@ -38,7 +38,7 @@ case class Program[S](
         sortedLineIds.indexOf(line) + 1
     }
     if (nextIndex == sortedLineIds.size) None
-    else Option(nextIndex)
+    else Option(sortedLineIds(nextIndex))
   }
 }
 

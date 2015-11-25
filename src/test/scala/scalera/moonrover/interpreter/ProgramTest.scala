@@ -1,7 +1,7 @@
 package scalera.moonrover.interpreter
 
 import scalera.moonrover.BaseTest
-import scalera.moonrover.CommandSet.{Move, Nop}
+import scalera.moonrover.CommandSet._
 import scalera.moonrover.RoverProgram._
 import scalera.moonrover.domain._
 
@@ -25,18 +25,37 @@ class ProgramTest extends BaseTest("Program") {
     }
   }
 
-  it should "generate a valid command stream" in {
-    val id = "rover-1"
-    Program(
-      1 -> LEFT,
-      2 -> GOTO(4),
-      3 -> RIGHT,
-      4 -> GOTO(1))(id).toStream().take(4).toList shouldEqual
-      List(Move(id,Left), Move(id,Left), Move(id,Left), Move(id,Left))
-    val program2 = Program(
+  it should "be able to determine next line to execute" in {
+    val r1 = "rover-1"
+    val program = Program(
       1 -> NOP,
-      2 -> NOP)(id)
-    program2.toStream().take(2).toList shouldEqual List(Nop(id), Nop(id))
-  }
+      2 -> RIGHT,
+      3 -> LEFT,
+      4 -> `IF FOUND PARACHUTE`(LEFT),
+      5 -> RIGHT,
+      6 -> `IF FOUND PARACHUTE`(GOTO(8)),
+      7 -> GOTO(1),
+      8 -> NOP
+    )(r1)
+    val s0 = Moon.withLanding(rover1 = r1,distanceBetweenRovers = 2)
+    program.entryPoint shouldEqual 1
 
+    val s1 = Nop(r1).perform(s0)
+    program.nextLine()(s1) shouldEqual Some(2)
+
+    val s2 = Move(r1,Right).perform(s1)
+    program.nextLine(2)(s2) shouldEqual Some(3)
+
+    val s3 = Move(r1,Left).perform(s2)
+    program.nextLine(3)(s3) shouldEqual Some(4)
+
+    val s4 = IfParachuteFound(r1,Move(r1,Left)).perform(s3)
+    program.nextLine(4)(s4) shouldEqual Some(5)
+
+    val s5 = Move(r1,Right).perform(s4)
+    program.nextLine(5)(s5) shouldEqual Some(6)
+
+    val s6 = IfParachuteFound(r1,GoTo(8)).perform(s5)
+    program.nextLine(6)(s6) shouldEqual Some(8)
+  }
 }

@@ -45,8 +45,8 @@ case class GoTo[S](line: LineId) extends Command[S] {
  * @tparam S Type of the state to update.
  */
 case class ConditionalCommand[S](
-                           condition: State[S] => Boolean,
-                           command: Command[S]) extends Command[S] {
+                                  condition: State[S] => Boolean,
+                                  command: Command[S]) extends Command[S] {
   override def perform(state: State[S]): State[S] =
     if (condition(state)) command.perform(state) else state
 }
