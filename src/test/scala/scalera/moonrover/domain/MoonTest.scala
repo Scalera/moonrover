@@ -4,6 +4,11 @@ import scalera.moonrover.BaseTest
 
 class MoonTest extends BaseTest("Moon") {
 
+  it should "print out a different toString" in {
+    Moon.withLanding(rover1 = "1",rover2 = "2",distanceBetweenRovers = 2)
+      .toString() shouldEqual s"1 P[0](0) - 2 P[2] (2) TOGETHER : [false]"
+  }
+
   it should "only admit two rovers on its surface" in {
     a[Exception] should be thrownBy {
       Moon(Map[Rover.Id, Rover]())

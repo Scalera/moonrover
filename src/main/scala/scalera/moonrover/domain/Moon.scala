@@ -1,8 +1,8 @@
 package scalera.moonrover.domain
 
 /**
-  * The Moon itself...and our [[Rover]]'s context
-  */
+ * The Moon itself...and our [[Rover]]'s context
+ */
 case class Moon(rovers: Map[Rover.Id, Rover]) {
 
   require(
@@ -10,11 +10,11 @@ case class Moon(rovers: Map[Rover.Id, Rover]) {
     "Not enough money for sending more than two rovers to the Moon")
 
   /**
-    * Determines whether the specified rover has found a parachute
-    * in the ground. It could be its, or the other rover's.
-    * @param rover Given rover id.
-    * @return
-    */
+   * Determines whether the specified rover has found a parachute
+   * in the ground. It could be its, or the other rover's.
+   * @param rover Given rover id.
+   * @return
+   */
   def foundParachute(rover: Rover.Id): Boolean = {
     val (currentRover, theOtherOne) =
       Option(rovers.partition { case (id, _) => rover == id }).map {
@@ -23,28 +23,35 @@ case class Moon(rovers: Map[Rover.Id, Rover]) {
     val result =
       currentRover.position.equals(theOtherOne.landingPosition) ||
         currentRover.position.equals(currentRover.landingPosition)
-    println(s"$result > ${currentRover.identifier} L[${currentRover.landingPosition.relative}] P[${currentRover.position.relative}] - ${theOtherOne.identifier} L[${theOtherOne.landingPosition.relative}] P[${theOtherOne.position.relative}]")
     result
   }
 
   /**
-    * Updates some [[Rover]] position over the surface of this moon
-    * @param rover Rover identifier
-    * @param movement Where did it move?
-    * @return
-    */
+   * Updates some [[Rover]] position over the surface of this moon
+   * @param rover Rover identifier
+   * @param movement Where did it move?
+   * @return
+   */
   def updateRoverLocation(rover: Rover.Id, movement: Movement): Moon = {
     rovers.get(rover).fold(this)(roverState =>
       Moon(rovers + (rover -> roverState.move(movement))))
   }
 
   /**
-    * Determine if rovers are finally together.
-    * @return
-    */
+   * Determine if rovers are finally together.
+   * @return
+   */
   def areRoversTogether: Boolean = {
     val (pos1 :: pos2 :: Nil) = rovers.values.map(_.position).toList
     pos1 == pos2
+  }
+
+  override def toString(): String = {
+    val (r1::r2::_) = rovers.toList.map(_._1).sortWith(_ < _)
+    s"$r1 P[${rovers(r1).landingPosition.relative}]" +
+      s"(${rovers(r1).landingPosition.relative}) - " +
+      s"$r2 P[${rovers(r2).position.relative}] " +
+      s"(${rovers(r2).landingPosition.relative}) TOGETHER : [$areRoversTogether]"
   }
 
 }
@@ -60,12 +67,12 @@ object Moon {
   val DistanceBetweenRovers = WhoCares
 
   /**
-    * Populate a desert [[Moon]] with
-    * a couple of kind rovers.
-    * @param rover1 Rover 1 id.
-    * @param rover2 Rover 2 id.
-    * @return
-    */
+   * Populate a desert [[Moon]] with
+   * a couple of kind rovers.
+   * @param rover1 Rover 1 id.
+   * @param rover2 Rover 2 id.
+   * @return
+   */
   def withLanding(
                    rover1: Rover.Id = Rover.someRoverId,
                    rover2: Rover.Id = Rover.someRoverId,
