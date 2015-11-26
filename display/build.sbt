@@ -16,9 +16,10 @@ ivyScala := ivyScala.value map {
 
 name := "moonrover-display"
 
-libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
-
-libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.5.3"
+libraryDependencies ++= Seq(
+  "org.scala-js" %%% "scalajs-dom" % "0.8.0",
+  "com.lihaoyi" %%% "scalatags" % "0.5.3",
+  "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4")
 
 bootSnippet := "scalera.moonrover.display.Boot().main(document.getElementById('canvas'));"
 
