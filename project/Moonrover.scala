@@ -8,7 +8,8 @@ object Moonrover extends Build {
   lazy val moonrover = Project(
     id = "moonrover",
     base = file(""),
-    aggregate = Seq(core,display))
+    aggregate = Seq(core, display),
+    settings = common)
 
   lazy val core = Project(
     id = "moonrover-core",
@@ -17,12 +18,15 @@ object Moonrover extends Build {
       name := "moonrover-core",
       libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
     )
-  )
+  ).enablePlugins(ScalaJSPlugin)
 
   lazy val display = Project(
     id = "moonrover-display",
     base = file("display"),
-    dependencies = Seq(core))
+    dependencies = Seq(core),
+    settings = common ++ Seq(
+      name := "moonrover-display"
+    ))
 
   //  Settings
 
