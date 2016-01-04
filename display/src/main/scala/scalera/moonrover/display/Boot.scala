@@ -21,22 +21,29 @@ object Boot {
 
     var sim = Simulator(Launch.program)
 
+    var currentTick: Int = 0
+
     var handler: Option[IntervalHandler] = None
 
     def run: Unit = {
       println(sim)
-      sim = SimulatorRender.render(sim)
-      if (sim.state.value.areRoversTogether) finished
+      sim = SimulatorRender.render(sim, currentTick)
+      if (sim.state.value.areRoversTogether) {
+        SimulatorRender.render(sim,currentTick)
+        finished
+      } else {
+        currentTick += 1
+      }
     }
 
     def finished: Unit = {
       //  Remove interval
       handler.foreach(dom.clearInterval)
-      //  TODO Congratulate winner
-      ()
+      dom.alert(s"Congratulations!\n" +
+        s"Your rovers found at tick $currentTick.")
     }
 
-    handler = Some(dom.setInterval(() => run, 1000))
+    handler = Some(dom.setInterval(() => run, 1500))
 
   }
 }

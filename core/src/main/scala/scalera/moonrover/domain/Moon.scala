@@ -46,6 +46,11 @@ case class Moon(rovers: Map[Rover.Id, Rover]) {
     pos1 == pos2
   }
 
+  def distanceBetweenRovers(): Int = {
+    val (pos1 :: pos2 :: Nil) = rovers.values.map(_.position).toList
+    math.abs(pos1.relative - pos2.relative)
+  }
+
   override def toString(): String = {
     val (r1::r2::_) = rovers.toList.map(_._1).sortWith(_ < _)
     s"$r1 P[${rovers(r1).position.relative}]" +
