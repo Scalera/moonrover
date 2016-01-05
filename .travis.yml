@@ -4,12 +4,11 @@ scala:
 jdk:
   - oraclejdk8
 script:
-  - sbt $TASKS
+  - cd core
   - sbt clean coverage test
 after_success:
-  - sbt coveralls
-env:
-  - TASKS='test'
+  - cd ..
+  - sbt ";project moonrover-core;coveralls"
 notifications:
   email:
     - scalerablog@gmail.com
