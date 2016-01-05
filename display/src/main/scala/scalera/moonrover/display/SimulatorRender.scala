@@ -2,8 +2,7 @@ package scalera.moonrover.display
 
 import org.scalajs.dom
 import org.scalajs.dom.CanvasRenderingContext2D
-import scalatags.JsDom.all._
-import org.scalajs.dom.raw.{HTMLImageElement, HTMLElement, ImageData}
+import org.scalajs.dom.raw.HTMLImageElement
 import scalera.moonrover.Simulator
 import scalera.moonrover.domain.Rover
 
@@ -30,6 +29,39 @@ object SimulatorRender {
 
     //  Background
 
+    renderBackground(simulator)
+
+    //  Distance between rovers and current tick
+
+    ctx.fillStyle = "white"
+    ctx.font = "30px sans-serif"
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+    ctx.fillText(
+      simulator.state.value.distanceBetweenRovers().toString,
+      400,
+      378)
+    ctx.fillText(
+      currentTick.toString,
+      760,
+      150)
+
+    //  Current program line
+
+    renderCurrentProgram(simulator, simulator.roverId1)
+    renderCurrentProgram(simulator, simulator.roverId2)
+  }
+
+  /**
+   * Draw the background image on the canvas
+   *
+   * @param simulator Current simulator state
+   * @param ctx Canvas context
+   * @return
+   */
+  def renderBackground(
+                        simulator: Simulator)(
+                        implicit ctx: CanvasRenderingContext2D): Unit = {
     val imageSelector: Int = (
       simulator.state.value.foundParachute(simulator.roverId1),
       simulator.state.value.foundParachute(simulator.roverId2)) match {
@@ -41,33 +73,6 @@ object SimulatorRender {
     val image = dom.document.createElement("img").asInstanceOf[HTMLImageElement]
     image.src = s"canvas-0$imageSelector.png"
     ctx.drawImage(image, 0, 0)
-
-    //  Distance between rovers
-
-    ctx.fillStyle = "white"
-    ctx.font = "30px sans-serif"
-    ctx.textAlign = "center"
-    ctx.textBaseline = "middle"
-    ctx.fillText(
-      simulator.state.value.distanceBetweenRovers().toString,
-      400,
-      378)
-
-    //  Current tick
-
-    ctx.fillStyle = "white"
-    ctx.font = "30px sans-serif"
-    ctx.textAlign = "center"
-    ctx.textBaseline = "middle"
-    ctx.fillText(
-      currentTick.toString,
-      760,
-      150)
-
-    //  Current program line
-
-    renderCurrentProgram(simulator, simulator.roverId1)
-    renderCurrentProgram(simulator, simulator.roverId2)
   }
 
   /**
@@ -86,10 +91,11 @@ object SimulatorRender {
     //  Set style
 
     val maxHeightForText = 120
-    val charHeight = synchronized{
+    val charHeight = synchronized {
       charSize.fold(
         setCharHeight(simulator.program(rover).commands.size, maxHeightForText))(
-          size => size)}
+          size => size)
+    }
 
     ctx.fillStyle = "white"
     ctx.font = s"${charHeight}px sans-serif"
@@ -113,7 +119,7 @@ object SimulatorRender {
         val currentLine =
           if (rover == simulator.roverId1) simulator.lineRover1
           else simulator.lineRover2
-        if (currentLine==Some(lineId)){
+        if (currentLine == Some(lineId)) {
           ctx.fillStyle = "blue"
         } else {
           ctx.fillStyle = "white"
@@ -121,7 +127,6 @@ object SimulatorRender {
         ctx.fillText(line, textX, y, 370)
         y + charHeight + 4
     }
-
   }
 
   /**
@@ -130,7 +135,6 @@ object SimulatorRender {
    * @return
    */
   def clear()(implicit ctx: CanvasRenderingContext2D): Unit = {
-
   }
 
   //  Helpers
@@ -148,7 +152,7 @@ object SimulatorRender {
       .reverseMap(n => n -> ((n + 4) * lines))
       .filter(_._2 < maxHeight)
       .head._1
-    synchronized(charSize=Some(height))
+    synchronized(charSize = Some(height))
     height
   }
 
@@ -159,5 +163,4 @@ object SimulatorRender {
    */
   private def fulfil(maxLength: Int): String => String = s =>
     if (s.length >= maxLength) s else fulfil(maxLength)(s"0$s")
-
 }

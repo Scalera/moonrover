@@ -25,6 +25,10 @@ object Boot {
 
     var handler: Option[IntervalHandler] = None
 
+    def preStart(): Unit = {
+      SimulatorRender.renderBackground(sim)
+    }
+
     def run: Unit = {
       println(sim)
       sim = SimulatorRender.render(sim, currentTick)
@@ -42,6 +46,8 @@ object Boot {
       dom.alert(s"Congratulations!\n" +
         s"Your rovers found at tick $currentTick.")
     }
+
+    preStart()
 
     handler = Some(dom.setInterval(() => run, 1500))
 
