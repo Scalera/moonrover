@@ -8,7 +8,7 @@ script:
   - sbt clean coverage test
 after_success:
   - cd ..
-  - sbt coveralls
+  - sbt ";project moonrover-core;coveralls"
 notifications:
   email:
     - scalerablog@gmail.com
