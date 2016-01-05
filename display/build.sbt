@@ -17,7 +17,6 @@ ivyScala := ivyScala.value map {
 name := "moonrover-display"
 
 libraryDependencies ++= Seq(
-  organization.value %% "moonrover-core" % version.value,
   "org.scala-js" %%% "scalajs-dom" % "0.8.0",
   "com.lihaoyi" %%% "scalatags" % "0.5.3",
   "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4")
