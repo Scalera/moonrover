@@ -61,7 +61,7 @@ Remember that all possibilities when defining the program are:
 
 ## How does the simulator looks like?
 
-![example](/doc/moonrover_example.jpg)
+![example](/doc/moonrover_example.png)
 
 The most remarkable things are:
 * At top-right you'll find the number of ticks have passed so far.
