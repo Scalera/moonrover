@@ -7,7 +7,7 @@ import org.scalajs.dom.html
 import scalera.moonrover.{Simulator, Launch}
 
 @JSExport
-object Boot {
+object Boot extends Config {
 
   type IntervalHandler = Int
 
@@ -49,7 +49,7 @@ object Boot {
 
     preStart()
 
-    handler = Some(dom.setInterval(() => run, 1500))
+    handler = Some(dom.setInterval(() => run, millisInterval))
 
   }
 }
