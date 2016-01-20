@@ -10,7 +10,7 @@ This is the source code for Scalera's first challenge.
 The ESA (European Space Agency) wants to send two robots (rovers) to the Moon.
 They are fitted with a sophisticated landing support: a parachute.
 The problem here is that it seems both robots won’t land at the same place…
-Once they’ve landed at the Moon, which has a discrete surface of infinite size, both rovers must find each other to start the mission together.
+Once they’ve landed at the same place as their own parachutes at the Moon, which has a discrete surface of infinite size, both rovers must find each other to start the mission together.
 
 The challenge consists on programming the rovers using a limited command set, so they finally manage to find each other.
 Keep in mind that the same program will be loaded on both robots and they don’t have any programatic way to know which their identifiers are.
