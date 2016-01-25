@@ -151,7 +151,9 @@ object SimulatorRender {
     val height = (3 to 18)
       .reverseMap(n => n -> ((n + 4) * lines))
       .filter(_._2 < maxHeight)
-      .head._1
+      .map(_._1)
+      .headOption
+      .getOrElse(3)
     synchronized(charSize = Some(height))
     height
   }
